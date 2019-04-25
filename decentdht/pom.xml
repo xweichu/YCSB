@@ -31,6 +31,10 @@ LICENSE file.
 
   <dependencies>
     <dependency>
+      <groupId>com.decent</groupId>
+      <artifactId>decent</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.yahoo.ycsb</groupId>
       <artifactId>core</artifactId>
       <version>${project.version}</version>
