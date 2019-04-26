@@ -27,11 +27,16 @@ public class DecentDHTClient extends DB {
    */
 
   private boolean isInited = false;
+  private DhtClientBinding clientBind;
+
+  public DecentDHTClient() {
+    this.clientBind = new DhtClientBinding();
+  }
 
   public void init() throws DBException {
     
     try {
-      DhtClientBinding.init();
+      this.clientBind.init();
     } catch (DhtClientBindingException e) {
       throw new DBException(e.getMessage());
     }
@@ -42,7 +47,7 @@ public class DecentDHTClient extends DB {
     
     if (isInited) {
       try {
-        DhtClientBinding.cleanup();
+        this.clientBind.cleanup();
       } catch (DhtClientBindingException e) {
         throw new DBException(e.getMessage());
       }
@@ -61,7 +66,7 @@ public class DecentDHTClient extends DB {
     // Convert the data retrieved to Json doc.
 
     try {
-      buffer = DhtClientBinding.read(key);
+      buffer = this.clientBind.read(key);
     } catch (DhtClientBindingException e) {
       return new Status("ERROR ", e.getMessage());
     }
@@ -92,7 +97,7 @@ public class DecentDHTClient extends DB {
 
     try {
       // Write the key and the value to our DHT here. Example: ioctx.write(key, json.toString());
-      DhtClientBinding.insert(key, json.toString());
+      this.clientBind.insert(key, json.toString());
     } catch (DhtClientBindingException e) {
       return new Status("ERROR ", e.getMessage());
     }
@@ -106,7 +111,7 @@ public class DecentDHTClient extends DB {
       
       // very simple function, just remove the data associated with the key given. table is not used.
       // Example: ioctx.remove(key);
-      DhtClientBinding.delete(key);
+      this.clientBind.delete(key);
     } catch (DhtClientBindingException e) {
       return new Status("ERROR ", e.getMessage());
     }
