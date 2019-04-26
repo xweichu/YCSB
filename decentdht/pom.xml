@@ -26,13 +26,14 @@ LICENSE file.
   </parent>
 
   <artifactId>decentdht-binding</artifactId>
-  <name>decentdht binding</name>
+  <name>Decent DHT Binding</name>
   <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
       <groupId>com.decent</groupId>
-      <artifactId>decent</artifactId>
+      <artifactId>dht</artifactId>
+      <version>0.1.0</version>
     </dependency>
     <dependency>
       <groupId>com.yahoo.ycsb</groupId>
@@ -41,10 +42,10 @@ LICENSE file.
       <scope>provided</scope>
     </dependency>
     <dependency>
-	    <groupId>org.json</groupId>
-  		<artifactId>json</artifactId>
-  		<version>${json.version}</version>
-  	</dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>${json.version}</version>
+    </dependency>
     <dependency>
       <groupId>net.java.dev.jna</groupId>
       <artifactId>jna</artifactId>
@@ -58,9 +59,48 @@ LICENSE file.
       <scope>test</scope>
     </dependency>
   </dependencies>
-
+  
+  
+  <build>
+    <plugins>
+    
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>clean</phase>
+            <goals>
+                <goal>install-file</goal>
+            </goals>
+            <configuration>
+              <groupId>com.decent</groupId>
+              <artifactId>dht</artifactId>
+              <version>0.1.0</version>
+              <packaging>jar</packaging>
+              <file>${basedir}/libs/dht-0.1.0.jar</file>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemProperties>
+            <property>
+              <name>java.library.path</name>
+              <value>${basedir}/libs/</value>
+            </property>
+          </systemProperties>
+        </configuration>
+      </plugin>
+      
+    </plugins>
+  </build>
+  
   <properties>
-  	<rados.version>0.2.0</rados.version>
-  	<json.version>20160212</json.version>
+    <json.version>20160212</json.version>
   </properties>
 </project>
