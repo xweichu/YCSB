@@ -121,13 +121,7 @@ public class DecentDHTClient extends DB {
   @Override
   public Status update(String table, String key, Map<String, ByteIterator> values) {
     
-    // Just call delete() function first and then call insert() function.
-    // No need to change the code.
-    Status rtn = delete(table, key);
-    if (rtn.equals(Status.OK)) {
-      return insert(table, key, values);
-    }
-    return rtn;
+    return insert(table, key, values);
   }
 
   @Override
