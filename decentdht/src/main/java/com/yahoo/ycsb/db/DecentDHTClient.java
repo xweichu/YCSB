@@ -34,7 +34,7 @@ public class DecentDHTClient extends DB {
   }
 
   public void init() throws DBException {
-    
+
     try {
       this.clientBind.init();
     } catch (DhtClientBindingException e) {
@@ -44,7 +44,7 @@ public class DecentDHTClient extends DB {
   }
 
   public void cleanup() throws DBException {
-    
+
     if (isInited) {
       try {
         this.clientBind.cleanup();
@@ -57,7 +57,7 @@ public class DecentDHTClient extends DB {
 
   @Override
   public Status read(String table, String key, Set<String> fields, Map<String, ByteIterator> result) {
-    
+
     // byte[] buffer;
     String buffer;
 
@@ -85,9 +85,8 @@ public class DecentDHTClient extends DB {
 
 
   @Override
-  public Status insert(String table, String key, Map<String, ByteIterator> values)
-  {
-    
+  public Status insert(String table, String key, Map<String, ByteIterator> values) {
+
     // table is ignored again.
     // No need to change the codes below.
     JSONObject json = new JSONObject();
@@ -106,7 +105,7 @@ public class DecentDHTClient extends DB {
 
   @Override
   public Status delete(String table, String key) {
-    
+
     try {
       
       // very simple function, just remove the data associated with the key given. table is not used.
@@ -120,8 +119,21 @@ public class DecentDHTClient extends DB {
 
   @Override
   public Status update(String table, String key, Map<String, ByteIterator> values) {
-    
-    return insert(table, key, values);
+
+    // table is ignored again.
+    // No need to change the codes below.
+    JSONObject json = new JSONObject();
+    for (final Entry<String, ByteIterator> e : values.entrySet()) {
+      json.put(e.getKey(), e.getValue().toString());
+    }
+
+    try {
+      // Write the key and the value to our DHT here. Example: ioctx.write(key, json.toString());
+      this.clientBind.update(key, json.toString());
+    } catch (DhtClientBindingException e) {
+      return new Status("ERROR ", e.getMessage());
+    }
+    return Status.OK;
   }
 
   @Override
