@@ -36,7 +36,12 @@ public class DecentDHTClient extends DB {
   public void init() throws DBException {
 
     try {
-      this.clientBind.init();
+      String maxOpPerTicket = System.getProperty("Decent.maxOpPerTicket");
+      if(maxOpPerTicket != null) {
+        this.clientBind.init(Long.parseLong(maxOpPerTicket));
+      } else {
+        this.clientBind.init(-1);
+      }
     } catch (DhtClientBindingException e) {
       throw new DBException(e.getMessage());
     }
